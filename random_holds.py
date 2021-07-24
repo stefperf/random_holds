@@ -7,38 +7,49 @@ from bisect import bisect
 
 
 class RandomHolds:
+    """simulating the riddle's climbing wall where holds are placed randomly till there are no more gaps"""
     def __init__(self, size):
+        """init to the given size with no holds placed"""
         self.size = size
         self.holds = []
         self.reset()
 
     def reset(self):
+        """reset to just the bottom and top holds"""
         self.holds = [0, self.size]
 
     def is_complete(self):
+        """True iff there are no gaps in the wall"""
         for hold0, hold1 in zip(self.holds[:-1], self.holds[1:]):
             if hold1 - hold0 > 1.0:
                 return False
         return True
 
     def add_random_hold(self):
+        """randomly add a new hold in a gap and return True, or return False if there are no gaps"""
+        if self.is_complete():
+            return False
         while True:
             new_hold = random.uniform(0, self.size)
             if new_hold not in self.holds and self.benefits_from(new_hold):
                 break
         self.holds = sorted(self.holds + [new_hold])
+        return True
 
     def benefits_from(self, new_hold):
+        """True iff new_hold falls in a gap"""
         index1 = bisect(self.holds, new_hold)
         index0 = index1 - 1
         return self.holds[index1] - self.holds[index0] > 1.
 
     def fill_up(self):
-        while not self.is_complete():
-            self.add_random_hold()
+        """randomly add holds till there are no more gaps"""
+        while self.add_random_hold():
+            pass
         return len(self.holds) - 2
 
     def average_holds(self, n_scenarios):
+        """Monte Carlo estimation of the avg, nr. of holds needed to fill all gaps"""
         sum_holds = 0
         for _ in range(n_scenarios):
             self.reset()
