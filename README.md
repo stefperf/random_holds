@@ -3,4 +3,4 @@ Numerical solution for [Riddle Classic 2021-07-23](https://fivethirtyeight.com/f
 
 f(x) = 2x - 1, derived [here](https://docs.google.com/document/d/1DKBAz_7YHERliuiMeoF3Oh33fwhf6QlqN1MYiw5KrMA/edit?usp=sharing) and verified by this code.
 
-Developep in Python 3.9.
+Developed in Python 3.9.
